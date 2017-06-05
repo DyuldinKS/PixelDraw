@@ -1,33 +1,29 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class ColorPanel extends JPanel {
 	
-	public ColorPanel(DrawingPanel dp) {
+	public ColorPanel(DrawingPanel dp, int colorButtonsAmount) {
 		super();
-		
-		addColorButtons(dp);
+		addColorButtons(dp, colorButtonsAmount);
 		addResetButton(dp);
 		addColorfulPaintingButton(dp);
-        
 	}
 	
 	// add color changing buttons 
-	private void addColorButtons(DrawingPanel dp) {
+	private void addColorButtons(DrawingPanel dp, int amount) {
 		
-		List<Color> colors = dp.getColors();
 		JButton btn;
-		
-        for(int i = 0; i < colors.size(); i++) {
-			btn = createButton(colors.get(i));
+        for(int i = 0; i < amount; i++) {
+			btn = new ColorButton( dp.getColor(i) );
 			
 			final int colorIndex = i;
 			btn.addActionListener(new ActionListener() {
@@ -51,7 +47,7 @@ public class ColorPanel extends JPanel {
 				Config.colorButton.width - 8,
 				Config.colorButton.height - 8);
 			
-		JButton btn = createButton(resetIcon, new Color(240, 240, 240));
+		JButton btn = new ColorButton( new Color(240, 240, 240), resetIcon );
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dp.resetField();
@@ -69,8 +65,8 @@ public class ColorPanel extends JPanel {
 				colorfulIcon,
 				Config.colorButton.width - 8,
 				Config.colorButton.height - 8);
-			
-		JButton btn = createButton(colorfulIcon, new Color(240, 240, 240));
+		
+		JButton btn = new ColorButton( new Color(240, 240, 240), colorfulIcon );
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dp.setColorfulPainting(true);
@@ -80,31 +76,11 @@ public class ColorPanel extends JPanel {
 		
 	}
 	
-	// create and initialize button with background icon
-	private JButton createButton(ImageIcon icon, Color bgColor) {
-		return initButton(new JButton(icon), bgColor);
-	}
-	
-	// create and initialize button	
-	private JButton createButton(Color bgColor) {
-		return initButton(new JButton(), bgColor);
-	}
-	
-	
-	private JButton initButton(JButton btn, Color bgColor) {
-		btn.setPreferredSize(Config.colorButton);
-		btn.setBorderPainted(false);
-		btn.setFocusPainted(false);
-		btn.setBackground(bgColor);
-		return btn;
-	}
-	
 	
 	private ImageIcon scale(ImageIcon icon, int w, int h) {
-		Image img = icon
+		return new ImageIcon(icon
 				.getImage()
-        		.getScaledInstance( w, h, java.awt.Image.SCALE_SMOOTH );
-		return new ImageIcon(img);
+        		.getScaledInstance( w, h, java.awt.Image.SCALE_SMOOTH ));
 	}
 	
 }

@@ -31,7 +31,7 @@ public class DrawingPanel extends JPanel{
 						Config.field.height * Config.cellSize));
 		add(canvas);
 		
-		ColorPanel colorPanel = new ColorPanel(this);
+		ColorPanel colorPanel = new ColorPanel(this, colors.size());
         colorPanel.setLayout(new GridLayout(1, colors.size()));
         add(colorPanel);
         
