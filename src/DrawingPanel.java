@@ -20,15 +20,14 @@ public class DrawingPanel extends JPanel{
 		readColors(Config.colorsPath);
 		currColorIndex = (int)(Math.random() * colors.size());
 		colorfulPainting = false;
-		repaint = true;
 		field = new int[Config.field.width][Config.field.height];
 		resetField();
 		
 		Canvas canvas = new Canvas(this);
 		canvas.setPreferredSize(
 				new Dimension(
-						Config.field.width * Config.cellSize, 
-						Config.field.height * Config.cellSize));
+						Config.field.width * Config.pxSize, 
+						Config.field.height * Config.pxSize));
 		add(canvas);
 		
 		ColorPanel colorPanel = new ColorPanel(this, colors.size());
@@ -42,16 +41,14 @@ public class DrawingPanel extends JPanel{
 		for(int[] row : field) {
 			for (int i = 0; i < row.length; i++) {
 				row[i] = currColorIndex;
-//				currColorIndex = (int )(Math.random() * colors.size());
+				// uncomment the line below to fill the canvas by random color pixels
+				// currColorIndex = (int )(Math.random() * colors.size());
 			}
 		}
 		currColorIndex = (currColorIndex + 1) % colors.size();
-		repaint = true;
+		enableRepaint();
 		repaint();
 	}
-	
-	
-
 	
 	
 	private void readColors(String fileName) {
@@ -76,15 +73,11 @@ public class DrawingPanel extends JPanel{
 	}
 	
 	
-	protected int[][] getField() {
-		return field;
-	}
-
-	protected List<Color> getColors() {
+	protected List<Color> getColorList() {
 		return Collections.unmodifiableList(colors);
 	}	
 	
-	protected void updateCellColor(int x, int y) {
+	protected void updatePixelColor(int x, int y) {
 		field[x][y] = currColorIndex;
 		if(colorfulPainting) {
 			currColorIndex = (currColorIndex + 1) % colors.size();
@@ -99,13 +92,19 @@ public class DrawingPanel extends JPanel{
 		return colors.get(index);
 	}
 	
+	protected Color getColor(int x, int y) {
+		return colors.get( field[x][y] );
+	}
+	
 	protected void setCurrentColor(int colorIndex) {
 		currColorIndex = colorIndex;
 	}
 	
-	protected void setColorfulPainting(boolean newValue) {
-		colorfulPainting = newValue;
-	}
+	protected void enableRepaint() { repaint = true; }
+	protected void disableRepaint() { repaint = false; }
+	
+	protected void enableColorfulPainting() { colorfulPainting = true; }
+	protected void disableColorfulPainting() { colorfulPainting = false; }
 	
 	private int[][] field;
 	private List<Color> colors;

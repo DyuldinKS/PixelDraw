@@ -1,10 +1,6 @@
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -28,7 +24,7 @@ public class ColorPanel extends JPanel {
 			final int colorIndex = i;
 			btn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					dp.setColorfulPainting(false);
+					dp.disableColorfulPainting();
 					dp.setCurrentColor(colorIndex);
 				}	
 			});
@@ -69,7 +65,7 @@ public class ColorPanel extends JPanel {
 		JButton btn = new ColorButton( new Color(240, 240, 240), colorfulIcon );
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dp.setColorfulPainting(true);
+				dp.enableColorfulPainting();
 			}	
 		});
 		add(btn);

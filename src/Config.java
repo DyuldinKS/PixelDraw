@@ -10,12 +10,12 @@ public class Config {
 	final static protected int minVerticalPaddings = 10;
 	final static protected int borderTop = 30;
 	
-	final static protected int cellSize = 12;
+	final static protected int pxSize = 12;
 	final static protected Dimension colorButton = new Dimension(48, 48);
 	
 	final static protected Dimension field = new Dimension(
-			(frame.width - minHorizontalPaddings) / cellSize,
-			(frame.height - minVerticalPaddings - borderTop - colorButton.height) / cellSize
+			(frame.width - minHorizontalPaddings) / pxSize,
+			(frame.height - minVerticalPaddings - borderTop - colorButton.height) / pxSize
 		);
 	
 	final static protected String colorsPath = "./src/materialColors.txt";

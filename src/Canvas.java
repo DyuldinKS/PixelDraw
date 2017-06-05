@@ -6,15 +6,13 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 
-
-
 public class Canvas extends JPanel {
 	
 	public Canvas(DrawingPanel drawingPanel) {
 		super();
 		
 		this.dp = drawingPanel;
-		this.px = new Cell(Config.cellSize);
+		this.px = new Cell(Config.pxSize);
 		addMouseListener(new MouseHandler()); // extends MouseAdapter
 		addMouseMotionListener(new MouseMotionHandler());
 //		addKeyListener(new KeyHandler());
@@ -26,18 +24,15 @@ public class Canvas extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D)g;
 		
-		int[][] field = dp.getField();
-		List<Color> colors = dp.getColors();
-		
 		if(dp.repaint) {            
-			int colorIndex = field[0][0];
-			g2D.setColor( dp.getColor(colorIndex) );
-			
-			for(int i = 0; i < field.length; i++){
-				for(int j = 0; j < field[i].length; j++) {
-					if( colorIndex != field[i][j] ) {
-						colorIndex = field[i][j];
-						g2D.setColor( dp.getColor(colorIndex) );
+			Color pixelColor = dp.getColor(0, 0);
+			g2D.setColor( pixelColor );
+
+			for(int i = 0; i < Config.field.width; i++){
+				for(int j = 0; j < Config.field.height; j++) {
+					if( pixelColor != dp.getColor(i, j) ) {
+						pixelColor = dp.getColor(i, j);
+						g2D.setColor( pixelColor );
 					}
 					g2D.fill(new Rectangle2D.Double( i * px.size, j * px.size, px.size, px.size ));
 				}
@@ -50,7 +45,7 @@ public class Canvas extends JPanel {
 	}
 	
 	public void paintCell(int x, int y) {
-		dp.updateCellColor(x, y);
+		dp.updatePixelColor(x, y);
 		dp.repaint = false;
 		px.setCoords(x, y);
 		paintImmediately( x * px.size, y * px.size, px.size, px.size );
