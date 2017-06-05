@@ -105,11 +105,16 @@ public class DrawingPanel extends JPanel{
 	
 	protected void enableColorfulPainting() { colorfulPainting = true; }
 	protected void disableColorfulPainting() { colorfulPainting = false; }
-	
+
+	// field contains color indexes of the color list
 	private int[][] field;
+	// color list
 	private List<Color> colors;
+	// index of the currently used color
 	private int currColorIndex;
+	// the canvas repaint mode switcher
 	protected boolean repaint;
+	// the colorful painting switcher
 	private boolean colorfulPainting;
 	
 }

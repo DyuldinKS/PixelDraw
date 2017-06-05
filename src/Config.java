@@ -1,21 +1,21 @@
 import java.awt.Dimension;
+import java.awt.Insets;
 
 public class Config {
 	
 	final static protected String name = "PixelDraw";
 	
 	final static Dimension frame = new Dimension(1280, 720);
-	
-	final static protected int minHorizontalPaddings = 10;
-	final static protected int minVerticalPaddings = 10;
+
+	final static Insets minInsets = new Insets(5, 5, 5, 5);
 	final static protected int borderTop = 30;
 	
 	final static protected int pxSize = 12;
 	final static protected Dimension colorButton = new Dimension(48, 48);
 	
 	final static protected Dimension field = new Dimension(
-			(frame.width - minHorizontalPaddings) / pxSize,
-			(frame.height - minVerticalPaddings - borderTop - colorButton.height) / pxSize
+			(frame.width - minInsets.left - minInsets.right) / pxSize,
+			(frame.height - minInsets.top - minInsets.bottom - borderTop - colorButton.height) / pxSize
 		);
 	
 	final static protected String colorsPath = "./src/materialColors.txt";
