@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.util.List;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -15,8 +17,6 @@ public class Canvas extends JPanel {
 		this.px = new Cell(Config.pxSize);
 		addMouseListener(new MouseHandler()); // extends MouseAdapter
 		addMouseMotionListener(new MouseMotionHandler());
-//		addKeyListener(new KeyHandler());
-		setFocusable(true);
 	}
 	
 	

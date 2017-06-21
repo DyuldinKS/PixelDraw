@@ -17,15 +17,20 @@ public class DrawingPanel extends JPanel{
 	
 	// field contains color indexes of the color list
 	private int[][] field;
+	// the last painted cell
 	protected Cell currCell;
 	// color list
 	private List<Color> colors;
 	// index of the currently used color
 	private int currColorIndex;
+	// index of the background color
+	private int bgColorIndex;
 	// the canvas repaint mode switcher
 	private boolean repaint;
 	// the colorful painting switcher
-	private boolean colorfulPainting;
+	protected enum Tool { BRUSH, COLORFUL_BRUSH, ERASER };
+	private Tool tool;
+//	private boolean colorfulPainting;
 	
 	private Canvas canvas;
 	
@@ -33,12 +38,12 @@ public class DrawingPanel extends JPanel{
 		
 		super();
 		
-		readColors(Config.colorsPath);
-		currColorIndex = (int)(Math.random() * colors.size());
-		colorfulPainting = false;
 		field = new int[Config.field.width][Config.field.height];
 		currCell = new Cell(Config.pxSize);
-		resetField();
+		readColors(Config.colorsPath);
+		currColorIndex = (int)(Math.random() * colors.size());
+		tool = Tool.BRUSH;
+		eraseField();
 		
 		canvas = new Canvas(this);
 		canvas.setPreferredSize(
@@ -53,29 +58,27 @@ public class DrawingPanel extends JPanel{
 
         setFocusable(true);
         addKeyListener(new KeyListener() {
-    	    public void keyPressed(KeyEvent e) {
-    	    	System.out.println("ke pressed");
+    	    public void keyPressed(KeyEvent e) { 
     	    	keyPressHandler( e.getKeyCode() );
     	    }
-    	    public void keyReleased(KeyEvent e) {
-    	    	System.out.println("key released");
-    	    }
-    	    public void keyTyped(KeyEvent e) {
-    	    	System.out.println("key typed");
-    	    }
+    	    public void keyReleased(KeyEvent e) { }
+    	    public void keyTyped(KeyEvent e) { }
     	});
         
 	}
 	
 	
-	protected void resetField() {
+	protected void eraseField() {
 		for(int[] row : field) {
 			for (int i = 0; i < row.length; i++) {
 				row[i] = currColorIndex;
 				// uncomment the line below to fill the canvas by random color pixels
-				// currColorIndex = (int )(Math.random() * colors.size());
+				// setCurrentColor( (int )(Math.random() * colors.size()) );
 			}
+			// uncomment the line below to fill the canvas by random colorful columns
+			// setCurrentColor( (int )(Math.random() * colors.size()) );
 		}
+		bgColorIndex = currColorIndex;
 		currColorIndex = (currColorIndex + 1) % colors.size();
 		currCell.setCoords(Config.field.width / 2, Config.field.height / 2);
 		enableRepaint();
@@ -110,44 +113,57 @@ public class DrawingPanel extends JPanel{
 		return Collections.unmodifiableList(colors);
 	}	
 	
+	
 	protected void updatePixelColor(int x, int y) {
-		if(colorfulPainting) {
-			currColorIndex = (currColorIndex + 1) % colors.size();
+		if(tool == Tool.COLORFUL_BRUSH) {
+			setCurrentColor( (currColorIndex + 1) % colors.size() );
 		}
 		field[x][y] = currColorIndex;
 		currCell.setCoords(x, y);
 	}
 	
+	
 	protected Color getCurrColor() {
 		return colors.get(currColorIndex);
 	}
+	
 	
 	protected Color getColor(int index) {
 		return colors.get(index);
 	}
 	
+	
 	protected Color getColor(int x, int y) {
 		return colors.get( field[x][y] );
 	}
+	
 	
 	protected void setCurrentColor(int colorIndex) {
 		currColorIndex = colorIndex;
 	}
 	
+	
 	protected boolean isRepaintMode() { return repaint == true; }
 	protected void enableRepaint() { repaint = true; }
 	protected void disableRepaint() { repaint = false; }
 	
-	protected void enableColorfulPainting() { colorfulPainting = true; }
-	protected void disableColorfulPainting() { colorfulPainting = false; }
+	
+	protected void pickColorfulBrush() { tool = Tool.COLORFUL_BRUSH; }
+	protected void pickBrush() { tool = Tool.BRUSH; }
+	protected void pickEraser() { 
+		tool = Tool.ERASER;
+		setCurrentColor( bgColorIndex );
+	}
+	
 	
 	
 	private void keyPressHandler(int keyCode) {
+		System.out.println(keyCode);
 		
 		int n = Config.cellAmountToPaintForKeyPress, i;
 		
     	switch( keyCode ) {
-    	case 65: // a
+    		case 65: // a
 			case KeyEvent.VK_LEFT:
 				for(i = 0; i < n && currCell.x > 0; i++) {
 					canvas.paintCell(--currCell.x, currCell.y);
@@ -182,9 +198,14 @@ public class DrawingPanel extends JPanel{
 			case 69: // e
 				setCurrentColor( (currColorIndex + 1) % colors.size() );
 				return;
+				
+			case KeyEvent.VK_SPACE:
+				pickEraser();
+				System.out.println("space:" + keyCode );
+				return;
 			// erase field
-			case 8: // backspace
-				resetField();
+			case KeyEvent.VK_BACK_SPACE:
+				eraseField();
 				return;
     	}
     	

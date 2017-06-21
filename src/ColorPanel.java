@@ -11,7 +11,8 @@ public class ColorPanel extends JPanel {
 		super();
 		addColorButtons(dp, colorButtonsAmount);
 		addResetButton(dp);
-		addColorfulPaintingButton(dp);
+		addEraserButton(dp);
+		addColorfulBrushButton(dp);
 	}
 	
 	// add color changing buttons 
@@ -24,7 +25,7 @@ public class ColorPanel extends JPanel {
 			final int colorIndex = i;
 			btn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					dp.disableColorfulPainting();
+					dp.pickBrush();
 					dp.setCurrentColor(colorIndex);
 				}	
 			});
@@ -33,6 +34,27 @@ public class ColorPanel extends JPanel {
 		}
         
 	}
+	
+	
+	// add canvas clearing button
+		private void addEraserButton(DrawingPanel dp) {
+			
+			ImageIcon resetIcon = new ImageIcon("./src/images/eraser.png");
+			resetIcon = scale(
+					resetIcon,
+					Config.colorButton.width - 8,
+					Config.colorButton.height - 8);
+				
+			JButton btn = new ColorButton( new Color(240, 240, 240), resetIcon );
+			btn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dp.pickEraser();
+				}	
+			});
+			add(btn);
+				
+		}
+	
 	
 	// add canvas clearing button
 	private void addResetButton(DrawingPanel dp) {
@@ -46,7 +68,7 @@ public class ColorPanel extends JPanel {
 		JButton btn = new ColorButton( new Color(240, 240, 240), resetIcon );
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dp.resetField();
+				dp.eraseField();
 			}	
 		});
 		add(btn);
@@ -54,7 +76,7 @@ public class ColorPanel extends JPanel {
 	}
 	
 	// add button for colorful painting
-	private void addColorfulPaintingButton(DrawingPanel dp) {
+	private void addColorfulBrushButton(DrawingPanel dp) {
 		
 		ImageIcon colorfulIcon = new ImageIcon("./src/images/colorful.png");
 		colorfulIcon = scale(
@@ -65,7 +87,7 @@ public class ColorPanel extends JPanel {
 		JButton btn = new ColorButton( new Color(240, 240, 240), colorfulIcon );
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dp.enableColorfulPainting();
+				dp.pickColorfulBrush();
 			}	
 		});
 		add(btn);
