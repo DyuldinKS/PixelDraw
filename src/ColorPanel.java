@@ -37,23 +37,23 @@ public class ColorPanel extends JPanel {
 	
 	
 	// add canvas clearing button
-		private void addEraserButton(DrawingPanel dp) {
+	private void addEraserButton(DrawingPanel dp) {
+		
+		ImageIcon resetIcon = new ImageIcon("./src/images/eraser.png");
+		resetIcon = scale(
+				resetIcon,
+				Config.colorButton.width - 8,
+				Config.colorButton.height - 8);
 			
-			ImageIcon resetIcon = new ImageIcon("./src/images/eraser.png");
-			resetIcon = scale(
-					resetIcon,
-					Config.colorButton.width - 8,
-					Config.colorButton.height - 8);
-				
-			JButton btn = new ColorButton( new Color(240, 240, 240), resetIcon );
-			btn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					dp.pickEraser();
-				}	
-			});
-			add(btn);
-				
-		}
+		JButton btn = new ColorButton( new Color(240, 240, 240), resetIcon );
+		btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dp.pickEraser();
+			}	
+		});
+		add(btn);
+			
+	}
 	
 	
 	// add canvas clearing button

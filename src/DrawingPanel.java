@@ -6,6 +6,8 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,12 +29,13 @@ public class DrawingPanel extends JPanel{
 	private int bgColorIndex;
 	// the canvas repaint mode switcher
 	private boolean repaint;
-	// the colorful painting switcher
-	protected enum Tool { BRUSH, COLORFUL_BRUSH, ERASER };
-	private Tool tool;
-//	private boolean colorfulPainting;
+	
+	protected enum DrawingTool { BRUSH, COLORFUL_BRUSH, ERASER };
+	// current drawing tool
+	private DrawingTool drawingTool;
 	
 	private Canvas canvas;
+
 	
 	public DrawingPanel() {
 		
@@ -40,9 +43,9 @@ public class DrawingPanel extends JPanel{
 		
 		field = new int[Config.field.width][Config.field.height];
 		currCell = new Cell(Config.pxSize);
-		readColors(Config.colorsPath);
+		colors = readColors(Config.colorsPath);
 		currColorIndex = (int)(Math.random() * colors.size());
-		tool = Tool.BRUSH;
+		drawingTool = DrawingTool.BRUSH;
 		eraseField();
 		
 		canvas = new Canvas(this);
@@ -86,16 +89,24 @@ public class DrawingPanel extends JPanel{
 	}
 	
 	
-	private void readColors(String fileName) {
+	private List<Color> readColors(String fileName) {
 		
+		List<Color> colors;
 		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 			colors = stream
 					.map(this::parseStringToColor)
 					.collect(Collectors.toList());
 		} catch (IOException e) {
-			System.out.println("Colors file not found");
+			System.out.println("Colors file not found. Default colors has used.");
 			e.printStackTrace();
+			colors = new ArrayList<Color>(
+				Arrays.asList( 
+						new Color(244, 67, 54), new Color(33, 150, 243), 
+						new Color(76, 175, 80), new Color(255, 235, 59) 
+					)
+			);
 		}
+		return colors;
 		
 	}
 	
@@ -115,7 +126,7 @@ public class DrawingPanel extends JPanel{
 	
 	
 	protected void updatePixelColor(int x, int y) {
-		if(tool == Tool.COLORFUL_BRUSH) {
+		if(drawingTool == DrawingTool.COLORFUL_BRUSH) {
 			setCurrentColor( (currColorIndex + 1) % colors.size() );
 		}
 		field[x][y] = currColorIndex;
@@ -148,13 +159,12 @@ public class DrawingPanel extends JPanel{
 	protected void disableRepaint() { repaint = false; }
 	
 	
-	protected void pickColorfulBrush() { tool = Tool.COLORFUL_BRUSH; }
-	protected void pickBrush() { tool = Tool.BRUSH; }
+	protected void pickColorfulBrush() { drawingTool = DrawingTool.COLORFUL_BRUSH; }
+	protected void pickBrush() { drawingTool = DrawingTool.BRUSH; }
 	protected void pickEraser() { 
-		tool = Tool.ERASER;
+		drawingTool = DrawingTool.ERASER;
 		setCurrentColor( bgColorIndex );
 	}
-	
 	
 	
 	private void keyPressHandler(int keyCode) {
