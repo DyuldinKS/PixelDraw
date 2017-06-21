@@ -24,8 +24,8 @@ public class Canvas extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D)g;
 		
-		if(dp.repaint) {            
-			Color pixelColor = dp.getColor(0, 0);
+		if(dp.isRepaintMode()) {            
+			Color pixelColor = dp.getCurrColor();
 			g2D.setColor( pixelColor );
 
 			for(int i = 0; i < Config.field.width; i++){
@@ -46,7 +46,7 @@ public class Canvas extends JPanel {
 	
 	public void paintCell(int x, int y) {
 		dp.updatePixelColor(x, y);
-		dp.repaint = false;
+		dp.disableRepaint();
 		px.setCoords(x, y);
 		paintImmediately( x * px.size, y * px.size, px.size, px.size );
 	}
@@ -69,7 +69,11 @@ public class Canvas extends JPanel {
 	private class MouseMotionHandler implements MouseMotionListener {
 
 		public void mouseDragged(MouseEvent e) {
-			paintCell(e.getX() / px.size, e.getY() / px.size);
+			int x = e.getX() / px.size;
+			int y = e.getY() / px.size;
+			if(x != dp.currCell.x || y != dp.currCell.y) {
+				paintCell(x, y);
+			}
 		}
 
 		public void mouseMoved(MouseEvent e) {}

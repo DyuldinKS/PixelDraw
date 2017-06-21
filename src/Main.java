@@ -20,7 +20,7 @@ public class Main {
 		frame.addComponentListener(new ComponentListener() {
 		    
 			public void componentResized(ComponentEvent e) {
-		        dp.repaint = true;
+		        dp.enableRepaint();
 		    }
 
 			public void componentHidden(ComponentEvent arg0) {}

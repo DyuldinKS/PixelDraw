@@ -10,6 +10,8 @@ public class Config {
 	final static Insets minInsets = new Insets(5, 5, 5, 5);
 	final static protected int borderTop = 30;
 	
+	final static protected int cellAmountToPaintForKeyPress = 3;
+	
 	final static protected int pxSize = 12;
 	final static protected Dimension colorButton = new Dimension(48, 48);
 	

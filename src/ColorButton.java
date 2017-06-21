@@ -19,6 +19,7 @@ public class ColorButton extends JButton {
 		setBorderPainted(false);
 		setFocusPainted(false);
 		setBackground(bgColor);
+		setFocusable(false);
 	}
 	
 }
