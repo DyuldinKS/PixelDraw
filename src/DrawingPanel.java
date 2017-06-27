@@ -3,9 +3,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.InputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +24,7 @@ public class DrawingPanel extends JPanel{
 	// the last painted cell
 	protected Cell currCell;
 	// color list
-	private List<Color> colors;
+	private ArrayList<Color> colors;
 	// index of the currently used color
 	private int currColorIndex;
 	// index of the background color
@@ -89,11 +91,12 @@ public class DrawingPanel extends JPanel{
 	}
 	
 	
-	private List<Color> readColors(String fileName) {
+	private ArrayList<Color> readColors(java.net.URL url) {
 		
-		List<Color> colors;
-		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
-			colors = stream
+		ArrayList<Color> colors;
+		try ( InputStream stream = url.openStream() ) {
+			BufferedReader reader = new BufferedReader( new InputStreamReader(stream) );
+			colors = (ArrayList<Color>) reader.lines()
 					.map(this::parseStringToColor)
 					.collect(Collectors.toList());
 		} catch (IOException e) {
@@ -168,7 +171,6 @@ public class DrawingPanel extends JPanel{
 	
 	
 	private void keyPressHandler(int keyCode) {
-		System.out.println(keyCode);
 		
 		int n = Config.cellAmountToPaintForKeyPress, i;
 		

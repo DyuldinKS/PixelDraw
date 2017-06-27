@@ -39,7 +39,7 @@ public class ColorPanel extends JPanel {
 	// add canvas clearing button
 	private void addEraserButton(DrawingPanel dp) {
 		
-		ImageIcon resetIcon = new ImageIcon("./src/images/eraser.png");
+		ImageIcon resetIcon = new ImageIcon(Config.eraserIconPath);
 		resetIcon = scale(
 				resetIcon,
 				Config.colorButton.width - 8,
@@ -59,7 +59,7 @@ public class ColorPanel extends JPanel {
 	// add canvas clearing button
 	private void addResetButton(DrawingPanel dp) {
 		
-		ImageIcon resetIcon = new ImageIcon("./src/images/reset.png");
+		ImageIcon resetIcon = new ImageIcon(Config.resetIconPath);
 		resetIcon = scale(
 				resetIcon,
 				Config.colorButton.width - 8,
@@ -78,7 +78,7 @@ public class ColorPanel extends JPanel {
 	// add button for colorful painting
 	private void addColorfulBrushButton(DrawingPanel dp) {
 		
-		ImageIcon colorfulIcon = new ImageIcon("./src/images/colorful.png");
+		ImageIcon colorfulIcon = new ImageIcon(Config.colorfulIconPath);
 		colorfulIcon = scale(
 				colorfulIcon,
 				Config.colorButton.width - 8,

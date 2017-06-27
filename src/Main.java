@@ -30,6 +30,7 @@ public class Main {
 		});
 		frame.add(dp);
         frame.setVisible(true);      
+        
     }
 	
 }

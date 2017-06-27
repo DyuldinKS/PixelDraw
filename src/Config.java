@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.net.URL;
 
 public class Config {
 	
@@ -20,8 +21,10 @@ public class Config {
 			(frame.height - minInsets.top - minInsets.bottom - borderTop - colorButton.height) / pxSize
 		);
 	
-	final static protected String colorsPath = "./src/materialColors.txt";
-	final static protected String paintIconPath = "./src/images/reset.png";
-	final static protected String colorfulIconPath = "./src/images/colorful.png";
+	final static protected URL colorsPath = Config.class.getResource("/materialColors.txt");
+	final static protected URL paintIconPath = Config.class.getResource("/images/reset.png");
+	final static protected URL colorfulIconPath = Config.class.getResource("/images/colorful.png");
+	final static protected URL resetIconPath = Config.class.getResource("/images/reset.png");
+	final static protected URL eraserIconPath = Config.class.getResource("/images/eraser.png");
 	
 }
